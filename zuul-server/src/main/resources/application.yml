@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: zuul-service
+
+server:
+  port: 8079
+
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
+
+
+zuul:
+  prefix: /api
+  routes:
+    eureka-client-1:
+      path: /client1/**
+      serviceId: EUREKA-CLIENT-1
+    eureka-client-2:
+      path: /client2/**
+      serviceId: EUREKA-CLIENT-2
+    eureka-client-3:
+      path: /client3/**
+      serviceId: EUREKA-CLIENT-3
+    eureka-client-7:
+      path: /client7/**
+      serviceId: EUREKA-CLIENT-7
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+spring.boot.admin.client.url: http://localhost:8093
+
+spring.boot.admin.client.username: admin
+spring.boot.admin.client.password: password
+spring.security.user.name: client
+spring.security.user.password: client
+spring.boot.admin.client.instance.metadata.user.name: ${spring.security.user.name}
+spring.boot.admin.client.instance.metadata.user.password: ${spring.security.user.password}
+
+
+#spring.zipkin.enabled: false

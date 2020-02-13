@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: eureka-client-7
+
+server:
+  port: 8007
+
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+spring.boot.admin.client.url: http://localhost:8093
+
+
+spring.boot.admin.client.username: admin
+spring.boot.admin.client.password: password
+spring.security.user.name: client
+spring.security.user.password: client
+spring.boot.admin.client.instance.metadata.user.name: ${spring.security.user.name}
+spring.boot.admin.client.instance.metadata.user.password: ${spring.security.user.password}
+
+
+#spring.zipkin.enabled: false

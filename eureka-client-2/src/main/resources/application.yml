@@ -1,0 +1,77 @@
+spring:
+  application:
+    name: eureka-client-2
+
+server:
+  port: 8002
+
+
+
+#Hystrix
+#eureka.client.fetch-registry=false
+#feign.hystrix.enabled=true
+
+
+eureka:
+  client:
+    fetch-registry: true
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
+    prefer-ip-address: true
+
+#eureka-client-3:
+#  ribbon:
+#    eureka:
+#      enabled: true
+
+#Feign
+feign:
+  name: eureka-client-3
+  url: http://localhost:8003/
+  hystrix:
+    enabled: true
+
+eureka-client-3:
+  ribbon:
+    eureka:
+      enabled: true
+    #listOfServers: 'http://localhost:8003,http://localhost:8004'
+    ServerListRefreshInterval: 2000
+    #NIWSServerListClassName: com.netflix.niws.loadbalancer.DiscoveryEnabledNIWSServerList
+    #NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+    #NFLoadBalancerRuleClassName: com.netflix.loadbalancer.WeightedResponseTimeRule
+    #DeploymentContextBasedVipAddresses: myservice
+
+feign.client7: eureka-client-7
+
+
+eureka-client-7:
+  ribbon:
+    eureka:
+      enabled: true
+    ServerListRefreshInterval: 2000
+
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - '*'
+          - hystrix.stream
+
+spring.boot.admin.client.url: http://localhost:8093
+
+
+spring.boot.admin.client.username: admin
+spring.boot.admin.client.password: password
+spring.security.user.name: client
+spring.security.user.password: client
+spring.boot.admin.client.instance.metadata.user.name: ${spring.security.user.name}
+spring.boot.admin.client.instance.metadata.user.password: ${spring.security.user.password}
+
+
+#spring.zipkin.enabled: false

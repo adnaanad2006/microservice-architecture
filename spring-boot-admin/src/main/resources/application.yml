@@ -1,0 +1,35 @@
+spring.application.name: spring-admin
+
+server:
+  port: 8093
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+logging.level.org.springframework.web: DEBUG
+
+
+spring.security.user.name: admin
+spring.security.user.password: password
+
+#spring.boot.admin.client.username: client
+#spring.boot.admin.client.password: client
+
+# Spring mail notification
+#Turn On less secure apps setting from gmail setting
+spring.mail.host: smtp.gmail.com
+spring.mail.protocol: smtp
+spring.mail.username: your_email
+spring.mail.password: your_password
+spring.mail.port: 587
+spring.mail.properties.mail.smtp.starttls.enable: true
+spring.mail.properties.mail.smtp.auth: true
+spring.mail.properties.mail.smtp.starttls.required: true
+mail.smtp.ssl.trust: smtp.gmail.com
+spring.boot.admin.notify.mail.to: to_email_address
+
+
+

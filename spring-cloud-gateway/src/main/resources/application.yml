@@ -1,0 +1,62 @@
+server:
+  port: 8080
+
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+spring.boot.admin.client.url: http://localhost:8093
+
+
+spring:
+  application:
+    name: cloud-gateway
+  cloud:
+    gateway:
+      default-filters:
+        - name: CustomFilter
+      routes:
+        - id: eurekaClient1
+          #uri: http://localhost:8001/
+          uri: lb://EUREKA-CLIENT-1
+          predicates:
+            - Path=/client1/**
+          filters:
+            - StripPrefix=1
+            - name: CircuitBreaker
+              args:
+                name: 'Eureka Client Prop'
+                fallbackUri: forward:/client1Fallback
+            #- CustomFilter
+            - AddRequestHeader=new-header-req-1,first-request-header
+            - AddResponseHeader=new-header-res-1,first-response-header
+        - id: eurekaClient2
+          #uri: http://localhost:8002/
+          uri: lb://EUREKA-CLIENT-2
+          predicates:
+            - Path=/client2/**
+          filters:
+            - StripPrefix=1
+        - id: eurekaClient3
+          #uri: http://localhost:8003/
+          uri: lb://EUREKA-CLIENT-3
+          predicates:
+            - Path=/client3/**
+          filters:
+            - StripPrefix=1
+        - id: eurekaClient7
+          #uri: http://localhost:8007/
+          uri: lb://EUREKA-CLIENT-7
+          predicates:
+            - Path=/client7/**
+          filters:
+            - StripPrefix=1
